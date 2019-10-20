@@ -113,6 +113,30 @@ class OssmEepromDriver : DriverItem {
 			return str
 		}
 
+		private fun wipeDev() {
+			var wl: IntArray? = null
+			if (nbt.getBoolean("erase")) {
+				wl = nbt.getIntArray("wear")
+			}
+			for (i in promdata.indices) {
+				blkErase(i + 1)
+				if (nbt.getBoolean("erase")) {
+					wl?.set(i + 1, 1)
+				}
+			}
+			if (nbt.getBoolean("erase")) {
+				nbt.setIntArray("wear", wl!!)
+			}
+			nbt.setByteArray("write", ByteArray(promdata.size))
+		}
+
+		private fun wipeDevCheck() {
+			if (nbt.getBoolean("wipe")) {
+				wipeDev()
+				nbt.setBoolean("wipe", false)
+			}
+		}
+
 		/* Device information! */
 		override fun getDeviceInfo() : Map<String, String> {
 			return mapOf(
@@ -128,6 +152,7 @@ class OssmEepromDriver : DriverItem {
 
 		@Callback(direct = true, limit = 256, doc = "blockRead(block:number):string -- Returns the data in a block")
 		fun blockRead(ctx: Context, args: Arguments): Array<Any> {
+			wipeDevCheck()
 			val blk = args.checkInteger(0)
 			return if (blk < 1 || blk > promdata.size) arrayOf(false, "invalid block id") else arrayOf(promdata[blk - 1])
 		}
@@ -143,20 +168,7 @@ class OssmEepromDriver : DriverItem {
 		fun erase(ctx: Context, args: Arguments): Array<Any> {
 			if (tier < 1)
 				return arrayOf(false, "no electronic erase support")
-			var wl: IntArray? = null
-			if (nbt.getBoolean("erase")) {
-				wl = nbt.getIntArray("wear")
-			}
-			for (i in promdata.indices) {
-				blkErase(i + 1)
-				if (nbt.getBoolean("erase")) {
-					wl?.set(i + 1, 1)
-				}
-			}
-			if (nbt.getBoolean("erase")) {
-				nbt.setIntArray("wear", wl!!)
-			}
-			nbt.setByteArray("write", ByteArray(promdata.size))
+			wipeDev()
 			ctx.pause(2.0)
 			return arrayOf(true)
 		}
@@ -182,6 +194,7 @@ class OssmEepromDriver : DriverItem {
 
 		@Callback(doc = "blockWrite(block:number, data:string):boolean -- Writes a block")
 		fun blockWrite(ctx: Context, args: Arguments): Array<Any> {
+			wipeDevCheck()
 			val blk = args.checkInteger(0)
 			val data = args.checkByteArray(1)
 			println("nbt size:" + nbt.getByteArray("write").size)
