@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "opencomputers:material",
+			"data": 5
+		},
+		{
+			"item": "opencomputers:material",
+			"data": 8
+		},
+		{
+			"item": "ossm:prom_1"
+		}
+	],
+	"result": {
+		"item": "ossm:prom_1_card"
+	}
+}

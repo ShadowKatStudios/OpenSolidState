@@ -1,0 +1,25 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"ncn",
+		"cuc",
+		"ncn"
+	],
+	"key": {
+		"n": {
+			"item": "opencomputers:material",
+			"data": 7
+		},
+		"c": {
+			"item": "opencomputers:storage",
+			"data": 0
+		},
+		"u": {
+			"item": "opencomputers:material",
+			"data": 11
+		}
+	},
+	"result": {
+		"item": "ossm:prom_0"
+	}
+}

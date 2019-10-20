@@ -1,0 +1,16 @@
+[
+{
+  "modid": "ossm",
+  "name": "OpenSolidState",
+  "description": "A mod that adds some solid state devices.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["AdorableCatgirl"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
