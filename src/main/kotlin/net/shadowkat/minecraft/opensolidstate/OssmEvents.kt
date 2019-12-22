@@ -7,6 +7,7 @@ import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.shadowkat.minecraft.opensolidstate.common.staticitems.OssmEeprom
 
 @Mod.EventBusSubscriber(modid = "ossm")
 object OssmEvents {

@@ -16,6 +16,7 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.common.DimensionManager
+import net.shadowkat.minecraft.opensolidstate.common.staticitems.OssmEeprom
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File

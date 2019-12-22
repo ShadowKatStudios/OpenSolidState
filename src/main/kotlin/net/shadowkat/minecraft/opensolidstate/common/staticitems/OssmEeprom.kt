@@ -1,4 +1,4 @@
-package net.shadowkat.minecraft.opensolidstate
+package net.shadowkat.minecraft.opensolidstate.common.staticitems
 
 import li.cil.oc.api.CreativeTab
 import net.minecraft.item.Item

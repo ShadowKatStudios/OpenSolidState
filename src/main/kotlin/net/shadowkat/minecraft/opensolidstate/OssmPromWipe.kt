@@ -3,7 +3,6 @@ package net.shadowkat.minecraft.opensolidstate
 import li.cil.oc.api.IMC
 import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack
-import org.apache.commons.lang3.tuple.Pair
 
 class OssmPromWipe {
 	companion object {
