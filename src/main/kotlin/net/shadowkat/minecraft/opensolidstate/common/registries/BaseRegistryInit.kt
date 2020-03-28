@@ -10,7 +10,7 @@ abstract class BaseRegistryInit(pkgpath : String) {
 
     @Throws(ClassNotFoundException::class)
     private fun findClasses(directory: File, packageName: String): ArrayList<KClass<*>> {
-        val classes : ArrayList<KClass<*>> = ArrayList<KClass<*>>()
+        val classes : ArrayList<KClass<*>> = ArrayList()
         if (!directory.exists()) {
             return classes
         }

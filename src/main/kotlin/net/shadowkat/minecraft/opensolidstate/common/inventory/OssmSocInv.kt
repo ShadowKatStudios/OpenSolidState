@@ -44,6 +44,7 @@ class OssmSocInv(tier : Int) : OssmDeviceInv(comp_tier[tier], "SoC") {
         for (i in (comp_extra[tier]*2)+3 until comp_tier[tier]-1) {
             tiers[i] = card_tier[tier][0]
         }
+        return tiers
     }
 
     override fun getUpgrades(): ArrayList<Int> {
