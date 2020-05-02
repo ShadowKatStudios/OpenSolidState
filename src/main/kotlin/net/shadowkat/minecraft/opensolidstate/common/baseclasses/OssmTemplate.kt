@@ -13,7 +13,7 @@ abstract class OssmTemplate {
     abstract val componentSlots : ArrayList<Pair<String, Int>>?
 
     fun register() {
-        IMC.registerAssemblerTemplate("temp_ossm"+this::class.qualifiedName, this::class.qualifiedName+".select", this::class.qualifiedName+".validate", this::class.qualifiedName+".assemble", host, containerTiers, upgradeTiers, componentSlots);
+        IMC.registerAssemblerTemplate("temp_ossm_"+this::class.qualifiedName, this::class.qualifiedName+".select", this::class.qualifiedName+".validate", this::class.qualifiedName+".assemble", host, containerTiers, upgradeTiers, componentSlots);
     }
 
     abstract fun select(stk: ItemStack): Boolean
