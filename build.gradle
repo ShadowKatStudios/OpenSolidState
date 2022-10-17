@@ -31,7 +31,7 @@ dependencies {
 }
 
 
-version = "1.0"
+version = "2.0.0"
 group = "net.shadowkat.minecraft.opensolidstate" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "opensolidstate"
 
