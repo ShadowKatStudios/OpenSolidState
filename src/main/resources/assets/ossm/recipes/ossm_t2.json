@@ -1,0 +1,27 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"cnc",
+		"nen",
+		"cuc"
+	],
+	"key": {
+		"e": {
+			"item": "ossm:prom_0"
+		},
+		"c": {
+			"item": "opencomputers:material",
+			"data": 8
+		},
+		"u": {
+			"item": "opencomputers:material",
+			"data": 11
+		},
+		"n": {
+			"item": "minecraft:gold_nugget"
+		}
+	},
+	"result": {
+		"item": "ossm:prom_1"
+	}
+}

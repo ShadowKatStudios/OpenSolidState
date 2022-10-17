@@ -1,0 +1,6 @@
+item.ossm_prom_0.name=GP EPROM (Tier 1)
+item.ossm_prom_0_card.name=GP EPROM Card (Tier 1)
+item.ossm_prom_1.name=GP EEPROM Card (Tier 2)
+item.ossm_prom_1_card.name=GP EEPROM Card (Tier 2)
+item.ossm_prom_2.name=GP EEPROM (Tier 3)
+item.ossm_prom_2_card.name=GP EPROM Card (Tier 3)

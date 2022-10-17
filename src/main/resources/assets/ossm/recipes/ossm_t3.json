@@ -1,0 +1,28 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"cnc",
+		"eue",
+		"cnc"
+	],
+	"key": {
+		"e": {
+			"item": "ossm:prom_1"
+		},
+		"c": {
+			"item": "opencomputers:material",
+			"data": 9
+		},
+		"u": {
+			"item": "opencomputers:material",
+			"data": 11
+		},
+		"n": {
+			"item": "opencomputers:material",
+			"data": 29
+		}
+	},
+	"result": {
+		"item": "ossm:prom_2"
+	}
+}
