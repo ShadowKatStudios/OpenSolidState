@@ -7,26 +7,34 @@ import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
+import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.registry.GameRegistry
+import net.shadowkat.minecraft.opensolidstate.common.Proxy
 
-@Mod(modid = "ossm", name = "OpenSolidState", version = "1.0.0", dependencies = "required-after:opencomputers@[1.7.0,)", modLanguageAdapter = "net.shadowfacts.forgelin.KotlinAdapter")
+@Mod(modid = "ossm", name = "OpenSolidState", version = "2.0.0", dependencies = "required-after:opencomputers@[1.7.0,)", modLanguageAdapter = "net.shadowfacts.forgelin.KotlinAdapter")
 object OpenSolidState {
+	@JvmStatic
 	@Mod.Instance
 	var instance: OpenSolidState? = null
+
+	@JvmField
+	@SidedProxy(clientSide = "net.shadowkat.minecraft.opensolidstate.client.Proxy", serverSide = "net.shadowkat.minecraft.opensolidstate.server.Proxy")
+	var prox : Proxy? = null
 
 	@Mod.EventHandler
 	fun preInit(e: FMLPreInitializationEvent) {
 		println("opensolidstate" + ":preInit")
-		OssmEvents.init()
+		//OssmEvents.init()
+		prox!!.preInit(e)
 	}
 
 	@Mod.EventHandler
 	fun init(e: FMLInitializationEvent) {
-		println("opensolidstate" + ":init")
+		/*println("opensolidstate" + ":init")
 		for (i in OssmEvents.shit.indices)
 			li.cil.oc.api.Driver.add(OssmEepromDriver(OssmEvents.shit[i])) // eat shit and die
 		OssmPromWipe.register()
@@ -34,14 +42,17 @@ object OpenSolidState {
 		IMC.registerProgramDiskLabel("promutils", "PROM Utilities", "Lua 5.2", "Lua 5.3", "LuaJ")
 		//val data = this::class.java.getResourceAsStream("assets/ossm/lua/romfs_exec.lua").readBytes()
 
-		val data = Minecraft.getMinecraft().resourceManager.getResource(ResourceLocation("ossm", "lua/romfs_exec.lua")).inputStream.readBytes()
+		//val data = Minecraft.getMinecraft().resourceManager.getResource(ResourceLocation("ossm", "lua/romfs_exec.lua")).inputStream.readBytes()
+		val data = OpenSolidState.javaClass.getResourceAsStream("assets/ossm/lua/romfs_exec.lua")!!.readBytes()
 
 		li.cil.oc.api.Items.registerEEPROM("ROMFS Bootloader", data, null, false)
-		//GameRegistry.addShapedRecipe();
+		//GameRegistry.addShapedRecipe();*/
+		prox!!.init(e)
 	}
 
 	@Mod.EventHandler
-	fun postInit(event: FMLPostInitializationEvent) {
+	fun postInit(e: FMLPostInitializationEvent) {
 		println("opensolidstate" + ":postInit")
+		prox!!.postInit(e)
 	}
 }
