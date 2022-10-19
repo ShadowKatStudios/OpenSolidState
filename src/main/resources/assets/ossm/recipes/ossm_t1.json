@@ -20,6 +20,7 @@
 		}
 	},
 	"result": {
-		"item": "ossm:prom_0"
+		"item": "ossm:prom",
+		"data": 0
 	}
 }

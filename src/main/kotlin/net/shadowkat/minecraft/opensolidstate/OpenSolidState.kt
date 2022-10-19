@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.common.config.Config
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.SidedProxy
@@ -27,6 +28,7 @@ object OpenSolidState {
 
 	@Mod.EventHandler
 	fun preInit(e: FMLPreInitializationEvent) {
+		//Settings.init()
 		println("opensolidstate" + ":preInit")
 		//OssmEvents.init()
 		prox!!.preInit(e)
@@ -55,4 +57,5 @@ object OpenSolidState {
 		println("opensolidstate" + ":postInit")
 		prox!!.postInit(e)
 	}
+
 }

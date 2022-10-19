@@ -1,6 +1,16 @@
-item.ossm_prom_0.name=GP EPROM (Tier 1)
-item.ossm_prom_0_card.name=GP EPROM Card (Tier 1)
-item.ossm_prom_1.name=GP EEPROM Card (Tier 2)
-item.ossm_prom_1_card.name=GP EEPROM Card (Tier 2)
-item.ossm_prom_2.name=GP EEPROM (Tier 3)
-item.ossm_prom_2_card.name=GP EPROM Card (Tier 3)
+item.ossm_prom_0.name=EPROM (Tier 1)
+item.ossm_prom_0_card.name=EPROM Card (Tier 1)
+item.ossm_prom_0_upgrade.name=EPROM Module (Tier 1)
+item.ossm_prom_1.name=EEPROM (Tier 2)
+item.ossm_prom_1_card.name=EEPROM Card (Tier 2)
+item.ossm_prom_1_upgrade.name=EEPROM Module (Tier 2)
+item.ossm_prom_2.name=EEPROM (Tier 3)
+item.ossm_prom_2_card.name=EEPROM Card (Tier 3)
+item.ossm_prom_2_upgrade.name=EEPROM Module (Tier 3)
+
+gui.ossm_tooltip_expand=§7Press [§f%s§7] to expand tooltip.§8
+gui.ossm_itemprop_storage=Storage Size
+gui.ossm_itemprop_speed=Max Speed
+gui.ossm_itemprop_sector=Sector Size
+gui.ossm_itemprop_electronic_erase=Electronically Erasable
+gui.ossm_tooltip_outdated=OUTDATED! Place in crafting bench to convert.

@@ -2,11 +2,15 @@ package net.shadowkat.minecraft.opensolidstate
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
+import net.minecraft.item.crafting.IRecipe
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.shadowkat.minecraft.opensolidstate.common.Items
+import net.shadowkat.minecraft.opensolidstate.common.items.OssmNewEeprom
+import net.shadowkat.minecraft.opensolidstate.common.recipes.EEPROMConvert
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 
@@ -16,6 +20,8 @@ object OssmEvents {
 
 	var items : HashMap<String, MutableList<Item>> = hashMapOf()
 	var postreg : HashMap<String, (Item) -> Int> = hashMapOf()
+
+	var model_register : MutableList<(ModelRegistryEvent) -> Unit> = mutableListOf()
 	private fun <T : Item> addItem(cls: KClass<T>, name: String, tiers: Int, firstTier: Int, secondArgOptions: Array<Any>?, prfunc: (Item) -> Int) {
 		val maxArgs = if (secondArgOptions == null) 0 else 1
 		lateinit var rcon : KFunction<T>
@@ -54,6 +60,7 @@ object OssmEvents {
 			li.cil.oc.api.Driver.add(OssmEepromDriver(it as OssmEeprom))
 			0
 		} // kotlin does not like this line
+
 	}
 
 	@SubscribeEvent
@@ -65,7 +72,17 @@ object OssmEvents {
 				event.registry.register(item)
 			}
 		}
+		val eeprom = OssmNewEeprom()
+		eeprom.register(event)
+		Items.EEPROM = eeprom
 	}
+
+	@SubscribeEvent
+	fun registerRecipes(event: RegistryEvent.Register<IRecipe>) {
+		event.registry.register(EEPROMConvert())
+	}
+
+
 
 	@SubscribeEvent
 	fun registerRenders(event: ModelRegistryEvent) {
@@ -74,6 +91,8 @@ object OssmEvents {
 				ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(item.registryName!!, "inventory"))
 			}
 		}
+		for (reg in model_register)
+			reg(event)
 		/*for (i in shit.indices)
 			ModelLoader.setCustomModelResourceLocation(shit[i], 0, ModelResourceLocation(shit[i].registryName!!, "inventory"))*/
 		//ModelLoader.set

@@ -14,6 +14,7 @@
 		}
 	],
 	"result": {
-		"item": "ossm:prom_0_card"
+		"item": "ossm:prom",
+		"data": 1
 	}
 }

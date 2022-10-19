@@ -39,10 +39,15 @@ class OssmEepromDriver : DriverItem {
 	}
 
 	val tier : Int
-	val card : Boolean
+	val formfactor : Int
 	constructor(i : Item) : super(ItemStack(i)) {
 		tier = (i as OssmEeprom).getTier();
-		card = (i as OssmEeprom).getCard();
+		formfactor = if ((i as OssmEeprom).getCard()) 0 else 1;
+	}
+
+	constructor(i : ItemStack) : super(i) {
+		tier = i.metadata/3
+		formfactor = i.metadata%3
 	}
 
 	override fun tier(stack: ItemStack?): Int {
@@ -50,26 +55,28 @@ class OssmEepromDriver : DriverItem {
 	}
 
 	override fun createEnvironment(stack: ItemStack, host: EnvironmentHost): ManagedEnvironment {
-		return OssmEeepromEnviroment(stack, host, tier, card, this)
+		return OssmEeepromEnviroment(stack, host, tier, formfactor, this)
 	}
 
+	val slots = arrayOf(Slot.HDD, Slot.Card, Slot.Upgrade)
+
 	override fun slot(stack: ItemStack): String {
-		return if (card) Slot.Card else Slot.HDD
+		return slots[formfactor]
 	}
 
 	public class OssmEeepromEnviroment : AbstractManagedEnvironment, DeviceInfo {
 		private val tier : Int
-		private val card : Boolean
+		private val formfactor : Int
 		private val stk : ItemStack
 		private var nbt : NBTTagCompound
 		private val node : Node?
 		private var promdata : Array<ByteArray>
 		private var uuid : String
 		private val driver : OssmEepromDriver
-		constructor(stack : ItemStack, host: EnvironmentHost, t : Int, c : Boolean, d : OssmEepromDriver) {
+		constructor(stack : ItemStack, host: EnvironmentHost, t : Int, c : Int, d : OssmEepromDriver) {
 			driver = d
 			tier = t
-			card = c
+			formfactor = c
 			stk = stack
 			nbt = NBTTagCompound()
 			promdata = Array(driver.getNBlks().toInt()) {ByteArray(driver.getBlkSize().toInt())}
@@ -104,10 +111,12 @@ class OssmEepromDriver : DriverItem {
 			var str = ""
 			if (nbt.getBoolean("erase"))
 				str += "K"
-			if (card)
+			if (formfactor == 0)
+				str += "H"
+			else if (formfactor == 1)
 				str += "C"
 			else
-				str += "H"
+				str += "U"
 			if (tier > 0)
 				str += "E"
 			return str
@@ -258,21 +267,18 @@ class OssmEepromDriver : DriverItem {
 				this.nbt.setIntArray("wear", wl)
 				this.nbt.setBoolean("erase", false)
 			}
-			if (uuid == null || uuid == "") {
+			if (uuid == "") {
 				if (node() != null) {
 					uuid = node()!!.address()!!
 				} else {
 					uuid = n.getCompoundTag("node").getString("address")
 				}
 			}
-			if (uuid != null && uuid != "") {
+			if (uuid != "") {
 				val savePath = File(DimensionManager.getCurrentSaveRootDirectory().toString() + "/ossm_drives/" + uuid + ".bin")
 				try {
 					val bis = ByteArrayInputStream(Files.readAllBytes(savePath.toPath()))
 					val blocks = driver.getNBlks().toInt()
-					if (promdata == null) {
-						promdata = Array(blocks) { ByteArray(driver.getBlkSize().toInt()) }
-					}
 					for (i in 0 until blocks) {
 						bis.read(promdata[i])
 					}

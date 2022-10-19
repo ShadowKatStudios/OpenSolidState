@@ -23,6 +23,7 @@
 		}
 	},
 	"result": {
-		"item": "ossm:prom_2"
+		"item": "ossm:prom",
+		"data": 6
 	}
 }
