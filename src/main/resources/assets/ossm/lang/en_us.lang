@@ -7,6 +7,9 @@ item.ossm_prom_1_upgrade.name=EEPROM Module (Tier 2)
 item.ossm_prom_2.name=EEPROM (Tier 3)
 item.ossm_prom_2_card.name=EEPROM Card (Tier 3)
 item.ossm_prom_2_upgrade.name=EEPROM Module (Tier 3)
+item.ossm_flash_0.name=Flash Module (Tier 1)
+item.ossm_flash_1.name=Flash Module (Tier 2)
+item.ossm_flash_2.name=Flash Module (Tier 3)
 
 gui.ossm_tooltip_expand=§7Press [§f%s§7] to expand tooltip.§8
 gui.ossm_itemprop_storage=Storage Size
@@ -14,3 +17,4 @@ gui.ossm_itemprop_speed=Max Speed
 gui.ossm_itemprop_sector=Sector Size
 gui.ossm_itemprop_electronic_erase=Electronically Erasable
 gui.ossm_tooltip_outdated=OUTDATED! Place in crafting bench to convert.
+gui.ossm_itemprop_usage=Usage

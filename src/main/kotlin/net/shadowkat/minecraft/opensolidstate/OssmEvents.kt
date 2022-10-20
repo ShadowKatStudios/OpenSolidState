@@ -9,6 +9,7 @@ import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.shadowkat.minecraft.opensolidstate.common.Items
+import net.shadowkat.minecraft.opensolidstate.common.items.OssmFlash
 import net.shadowkat.minecraft.opensolidstate.common.items.OssmNewEeprom
 import net.shadowkat.minecraft.opensolidstate.common.recipes.EEPROMConvert
 import kotlin.reflect.KClass
@@ -74,7 +75,8 @@ object OssmEvents {
 		}
 		val eeprom = OssmNewEeprom()
 		eeprom.register(event)
-		Items.EEPROM = eeprom
+		val flash = OssmFlash()
+		flash.register(event)
 	}
 
 	@SubscribeEvent

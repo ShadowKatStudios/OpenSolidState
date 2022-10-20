@@ -113,15 +113,29 @@ class EEPROM(val tier : Int, val formfactor : Int, val host : EnvironmentHost, v
     }
 
     @Callback(doc = "setLabel(label:string):string -- Sets the label of the EEPROM.")
-    fun setLabel(ctx: Context, args: Arguments): Array<Any> {
+    fun setLabel(ctx: Context, args: Arguments): Array<Any?> {
         //nbt.setString("label", args.checkString(0))
         //stk.setStackDisplayName(args.checkString(0))
-        return arrayOf(stk.displayName)
+        if (args.count() == 0) {
+            driver.dataTag(stk).removeTag("oc:label")
+            return arrayOf("")
+        }
+        driver.dataTag(stk).setString("oc:label", args.checkString(0).substring(0, 15))
+        return arrayOf(driver.dataTag(stk).getString("oc:label"))
     }
 
     @Callback(direct = true, doc = "getLabel():string -- Gets the label of the EEPROM.")
-    fun getLabel(ctx: Context, args: Arguments): Array<Any> {
-        return arrayOf(stk.displayName)
+    fun getLabel(ctx: Context, args: Arguments): Array<Any?> {
+        return arrayOf(driver.dataTag(stk).getString("oc:label"))
+    }
+
+    @Callback(direct = true, doc = "blockFree():boolean -- Gets if block has been written to or not.")
+    fun blockFree(ctx: Context, args: Arguments): Array<Any?> {
+        val blk = args.checkInteger(0)
+        val bs = driver.dataTag(stk).getByteArray("written")
+        if (blk < 1 || blk > getBlks())
+            return arrayOf(null, "block $blk out of bounds")
+        return arrayOf(bs[blk-1] > 0)
     }
 
     override fun load(n: NBTTagCompound) {
@@ -140,9 +154,9 @@ class EEPROM(val tier : Int, val formfactor : Int, val host : EnvironmentHost, v
         }
         if (uuid != "")
             sdev.uuid = uuid
-        if (n.getByteArray("written").size < getBlks() ) {
+        /*if (n.getByteArray("written").size < getBlks() ) {
             n.setByteArray("written", ByteArray(getBlks()))
-        }
+        }*/
     }
 
     override fun save(n: NBTTagCompound) {

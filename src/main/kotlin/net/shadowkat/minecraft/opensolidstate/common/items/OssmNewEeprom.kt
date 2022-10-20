@@ -14,6 +14,7 @@ import net.minecraftforge.event.RegistryEvent
 import net.shadowkat.minecraft.opensolidstate.OssmEepromDriver
 import net.shadowkat.minecraft.opensolidstate.OssmEvents
 import net.shadowkat.minecraft.opensolidstate.common.Constants
+import net.shadowkat.minecraft.opensolidstate.common.Items
 import net.shadowkat.minecraft.opensolidstate.common.Settings
 import net.shadowkat.minecraft.opensolidstate.common.utils.Utils
 import net.shadowkat.minecraft.opensolidstate.server.drivers.EepromDriver
@@ -34,6 +35,16 @@ class OssmNewEeprom() : OssmBaseItem() {
 
     override fun addAdditionalInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         val tier = getTier(stack)
+        if (stack.getSubCompound("oc:data")?.hasKey("written") == true) {
+            val writ = stack.getSubCompound("oc:data")!!.getByteArray("written")
+            val blocks = stack.getSubCompound("oc:data")!!.getInteger("blocks")
+            val blksize = stack.getSubCompound("oc:data")!!.getInteger("blockSize")
+            var used = 0
+            for (i in 0 until blocks) {
+                used += if (writ[i] > 0) blksize else 0
+            }
+            tooltip.add("§7"+I18n.format("gui.ossm_itemprop_usage")+": §f"+String.format("%d/%d bytes", used, blocks*blksize)+"§8")
+        }
         if (tier > 0) {
             tooltip.add("§f§i"+ I18n.format("gui.ossm_itemprop_electronic_erase")+"§r§8")
         }
@@ -41,6 +52,7 @@ class OssmNewEeprom() : OssmBaseItem() {
 
     override fun register(event: RegistryEvent.Register<Item>) {
         event.registry.register(this)
+        Items.EEPROM = this
         OssmEvents.model_register.add {
             li.cil.oc.api.Driver.add(EepromDriver())
             for (i in 0..8) {

@@ -37,6 +37,10 @@ abstract class OssmBaseItem : Item() {
             var outdated_text = I18n.format("gui.ossm_tooltip_outdated")
             tooltip.add("§4§l$outdated_text§r")
         }
+        val ossm_data = stack.getSubCompound("oc:data")
+        if ((ossm_data != null) && ossm_data.hasKey("oc:label")) {
+            tooltip.add(ossm_data.getString("oc:label"))
+        }
         val sprintkey = Minecraft.getMinecraft().gameSettings.keyBindSneak
         if (GuiScreen.isShiftKeyDown()) {
             val data = getData(stack)
@@ -48,7 +52,6 @@ abstract class OssmBaseItem : Item() {
             tooltip.add(I18n.format("gui.ossm_tooltip_expand", "LSHIFT"))
         }
         if (flagIn.isAdvanced) {
-            val ossm_data = stack.getSubCompound("oc:data")
             if ((ossm_data != null) && ossm_data.hasKey("node")) {
                 tooltip.add("§8${ossm_data.getCompoundTag("node").getString("address").substring(0, 13)}")
             }
