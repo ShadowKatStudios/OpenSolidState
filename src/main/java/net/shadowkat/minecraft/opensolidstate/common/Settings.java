@@ -6,6 +6,7 @@ import net.minecraftforge.common.config.Config.*;
 @Config(modid = "ossm")
 public class Settings {
     public static Storage storage = new Storage();
+    public static Components items = new Components();
 
     public static class Storage {
         @Comment({"EEPROM block size"})
@@ -43,6 +44,12 @@ public class Settings {
         @Comment("Disc speeds")
         @Name("disc_speeds")
         public int[] discSpeeds = {1, 4, 16, 24};
+    }
+
+    public static class Components {
+        @Comment("SoC Complexity")
+        @Name("soc_complexity")
+        public int[] socComplexity = {1, 2, 5, 9001};
     }
 
 }

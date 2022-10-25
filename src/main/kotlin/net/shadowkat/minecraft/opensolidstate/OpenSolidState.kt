@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.registry.GameRegistry
+import net.shadowkat.minecraft.opensolidstate.common.Hooks
 import net.shadowkat.minecraft.opensolidstate.common.Proxy
 
 @Mod(modid = "ossm", name = "OpenSolidState", version = "2.0.0", dependencies = "required-after:opencomputers@[1.7.0,)", modLanguageAdapter = "net.shadowfacts.forgelin.KotlinAdapter")
@@ -25,6 +26,9 @@ object OpenSolidState {
 	@JvmField
 	@SidedProxy(clientSide = "net.shadowkat.minecraft.opensolidstate.client.Proxy", serverSide = "net.shadowkat.minecraft.opensolidstate.server.Proxy")
 	var prox : Proxy? = null
+
+	@SidedProxy(clientSide = "net.shadowkat.minecraft.opensolidstate.client.Hooks", serverSide = "net.shadowkat.minecraft.opensolidstate.server.Hooks")
+	var hooks : Hooks? = null
 
 	@Mod.EventHandler
 	fun preInit(e: FMLPreInitializationEvent) {

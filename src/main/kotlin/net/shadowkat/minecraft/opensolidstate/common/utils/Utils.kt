@@ -30,4 +30,10 @@ object Utils {
     fun getRarity(tier : Int) : EnumRarity {
         return tiers[Math.min(tier, 3)]
     }
+
+    fun <A, B> ktPairList(vararg pairs : Pair<A, B>) : List<org.apache.commons.lang3.tuple.Pair<A, B>> {
+        return List<org.apache.commons.lang3.tuple.Pair<A, B>>(pairs.size) {
+            org.apache.commons.lang3.tuple.Pair.of(pairs[it].first, pairs[it].second)
+        }
+    }
 }

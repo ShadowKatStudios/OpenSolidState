@@ -7,9 +7,20 @@ item.ossm_prom_1_upgrade.name=EEPROM Module (Tier 2)
 item.ossm_prom_2.name=EEPROM (Tier 3)
 item.ossm_prom_2_card.name=EEPROM Card (Tier 3)
 item.ossm_prom_2_upgrade.name=EEPROM Module (Tier 3)
+
 item.ossm_flash_0.name=Flash Module (Tier 1)
 item.ossm_flash_1.name=Flash Module (Tier 2)
 item.ossm_flash_2.name=Flash Module (Tier 3)
+
+item.ossm_soc_template_0.name=System on Chip (SoC) Template (Tier 1)
+item.ossm_soc_template_1.name=System on Chip (SoC) Template (Tier 2)
+item.ossm_soc_template_2.name=System on Chip (SoC) Template (Tier 3)
+item.ossm_soc_template_3.name=System on Chip (SoC) Template (Creative)
+
+item.ossm_soc_0.name=System on Chip (SoC) (Tier 1)
+item.ossm_soc_1.name=System on Chip (SoC) (Tier 2)
+item.ossm_soc_2.name=System on Chip (SoC) (Tier 3)
+item.ossm_soc_3.name=System on Chip (SoC) (Creative)
 
 gui.ossm_tooltip_expand=§7Press [§f%s§7] to expand tooltip.§8
 gui.ossm_itemprop_storage=Storage Size
@@ -17,4 +28,8 @@ gui.ossm_itemprop_speed=Max Speed
 gui.ossm_itemprop_sector=Sector Size
 gui.ossm_itemprop_electronic_erase=Electronically Erasable
 gui.ossm_tooltip_outdated=OUTDATED! Place in crafting bench to convert.
+gui.ossm_depreciated=§4§bDEPRECIATED§r §4Will be removed in a future update.
 gui.ossm_itemprop_usage=Usage
+gui.ossm_too_many_embeded_devices=Too complex!
+gui.ossm_complexity=Complexity: %d/%d
+gui.ossm_maybe_add_items=Maybe you should add components.

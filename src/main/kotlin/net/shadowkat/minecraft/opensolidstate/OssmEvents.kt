@@ -73,10 +73,11 @@ object OssmEvents {
 				event.registry.register(item)
 			}
 		}
-		val eeprom = OssmNewEeprom()
+		/*val eeprom = OssmNewEeprom()
 		eeprom.register(event)
 		val flash = OssmFlash()
-		flash.register(event)
+		flash.register(event)*/
+		Items.load(event)
 	}
 
 	@SubscribeEvent

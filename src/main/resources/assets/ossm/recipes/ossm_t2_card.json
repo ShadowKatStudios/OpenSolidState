@@ -10,7 +10,8 @@
 			"data": 8
 		},
 		{
-			"item": "ossm:prom_1"
+			"item": "ossm:prom",
+			"data": 3
 		}
 	],
 	"result": {

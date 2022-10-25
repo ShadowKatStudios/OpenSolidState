@@ -16,6 +16,8 @@ class OssmEeprom : OssmBaseItem {
 	private val tier : Int
 	private val card : Boolean
 
+	override val lore: String = "An item from a different year."
+
 	constructor(tier : Int, card : Boolean) {
 		this.outdated = true
 		this.tier = tier

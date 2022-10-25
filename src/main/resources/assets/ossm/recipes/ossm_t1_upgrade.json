@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "ossm:prom_0"
+    }
+  ],
+  "result": {
+    "item": "ossm:prom",
+    "data": 2
+  }
+}

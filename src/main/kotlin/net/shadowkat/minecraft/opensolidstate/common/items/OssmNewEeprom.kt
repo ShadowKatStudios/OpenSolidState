@@ -20,7 +20,9 @@ import net.shadowkat.minecraft.opensolidstate.common.utils.Utils
 import net.shadowkat.minecraft.opensolidstate.server.drivers.EepromDriver
 
 class OssmNewEeprom() : OssmBaseItem() {
-    init {
+
+    override val lore: String = "An EEPROM can store program data. It's extremely quick to read, but slow to write and needs to be erased before it can be written again."
+        init {
         setHasSubtypes(true)
         setRegistryName("ossm:prom")
         creativeTab = CreativeTab.instance

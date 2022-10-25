@@ -21,6 +21,8 @@ abstract class OssmBaseItem : Item() {
     abstract fun getTier(stack : ItemStack) : Int
     var outdated = false
 
+    abstract val lore : String
+
     override fun getRarity(stack: ItemStack): EnumRarity {
         val tier = getTier(stack)
         return Utils.getRarity(tier)
@@ -43,6 +45,7 @@ abstract class OssmBaseItem : Item() {
         }
         val sprintkey = Minecraft.getMinecraft().gameSettings.keyBindSneak
         if (GuiScreen.isShiftKeyDown()) {
+            tooltip.add(lore)
             val data = getData(stack)
             for (pair in data) {
                 tooltip.add("§7"+I18n.format("gui.ossm_itemprop_"+pair.first)+": §f"+pair.second+"§8")
