@@ -14,6 +14,7 @@ import net.minecraftforge.common.DimensionManager
 import net.shadowkat.minecraft.opensolidstate.common.Settings
 import net.shadowkat.minecraft.opensolidstate.server.drivers.EepromDriver
 import net.shadowkat.minecraft.opensolidstate.server.utils.StorageDeviceManager
+import net.shadowkat.minecraft.opensolidstate.server.utils.ZeroOnlyBlkdev
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -28,13 +29,13 @@ class EEPROM(val tier : Int, val formfactor : Int, val host : EnvironmentHost, v
     /*val promdata : Array<ByteArray> = Array<ByteArray>(Settings.storage.eepromSizes[tier]) {
         ByteArray(Settings.storage.eepromBlksize)
     }*/
-    val sdev : StorageDeviceManager
+    val sdev : ZeroOnlyBlkdev
     val capacity : Int
 
     init {
         setNode(node)
         //uuid = stk.getSubCompound("oc:data")?.getCompoundTag("network")?.getString("address") ?: "" // fuck OFF
-        sdev = StorageDeviceManager(stk, null, Settings.storage.eepromBlksize, Settings.storage.eepromSizes[tier]) // because the uuid is always fucking wrong
+        sdev = ZeroOnlyBlkdev(stk, null, Settings.storage.eepromBlksize, Settings.storage.eepromSizes[tier]) // because the uuid is always fucking wrong
         capacity = sdev.blkSize*sdev.blks
     }
 
@@ -68,7 +69,6 @@ class EEPROM(val tier : Int, val formfactor : Int, val host : EnvironmentHost, v
     @Callback(doc = "erase():boolean -- Erases the entire EEPROM")
     fun erase(ctx: Context, args: Arguments): Array<Any> {
         sdev.erase(0xFF.toByte())
-        driver.dataTag(stk).setByteArray("written", ByteArray(getBlks()) {0})
         ctx.pause(Settings.storage.eepromFlashTime)
         return arrayOf(true)
     }
@@ -77,17 +77,8 @@ class EEPROM(val tier : Int, val formfactor : Int, val host : EnvironmentHost, v
     fun blockWrite(ctx: Context, args: Arguments): Array<Any?> {
         val blk = args.checkInteger(0)
         val data = args.checkByteArray(1)
-        if (blk < 1 || blk > getBlks())
-            return arrayOf(null, "block $blk out of bounds")
-        if (driver.dataTag(stk).getByteArray("written")[blk - 1] > 0) {
-            return arrayOf(null, "block is read-only")
-        }
         //System.arraycopy(data, 0, promdata[blk - 1], 0, min(data.size, Settings.storage.eepromBlksize))
         sdev.writeBlk(blk-1, data)
-        val bs = driver.dataTag(stk).getByteArray("written")
-        //println("write size: " + bs.size)
-        bs[blk - 1] = 1
-        driver.dataTag(stk).setByteArray("written", bs)
         ctx.pause((Settings.storage.eepromFlashTime / getBlks()))
         return arrayOf(true)
     }
@@ -129,14 +120,14 @@ class EEPROM(val tier : Int, val formfactor : Int, val host : EnvironmentHost, v
         return arrayOf(driver.dataTag(stk).getString("oc:label"))
     }
 
-    @Callback(direct = true, doc = "blockFree():boolean -- Gets if block has been written to or not.")
+    /*@Callback(direct = true, doc = "blockFree():boolean -- Gets if block has been written to or not.")
     fun blockFree(ctx: Context, args: Arguments): Array<Any?> {
         val blk = args.checkInteger(0)
         val bs = driver.dataTag(stk).getByteArray("written")
         if (blk < 1 || blk > getBlks())
             return arrayOf(null, "block $blk out of bounds")
         return arrayOf(bs[blk-1] > 0)
-    }
+    }*/
 
     override fun load(n: NBTTagCompound) {
         super.load(n)

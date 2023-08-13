@@ -8,7 +8,7 @@ import java.io.RandomAccessFile
 import kotlin.math.max
 import kotlin.math.min
 
-class StorageDeviceManager(val stk : ItemStack, n_uuid : String?, blockSize : Int, blocks : Int) {
+open class StorageDeviceManager(val stk : ItemStack, n_uuid : String?, blockSize : Int, blocks : Int) {
     var uuid : String = ""
     lateinit var file : File
     val blkSize : Int
@@ -61,13 +61,17 @@ class StorageDeviceManager(val stk : ItemStack, n_uuid : String?, blockSize : In
         return this::filehand.isInitialized
     }
 
-    fun writeBlk(pos : Int, bytes : ByteArray) {
+    fun rawWriteBlk(pos : Int, bytes : ByteArray) {
         if (!isReady() || cache.containsKey(pos)) {
             cache[pos] = bytes
             return
         }
         filehand.seek((pos*blkSize).toLong())
         filehand.write(bytes, 0, min(blkSize, bytes.size))
+    }
+
+    open fun writeBlk(pos : Int, bytes : ByteArray) {
+        rawWriteBlk(pos, bytes)
     }
 
     fun readBlk(pos : Int) : ByteArray {
@@ -86,7 +90,7 @@ class StorageDeviceManager(val stk : ItemStack, n_uuid : String?, blockSize : In
     fun erase(fillByte : Byte) {
         if (!isReady()) {
             for (i in 0 until blks) {
-                writeBlk(i, ByteArray(blkSize) {fillByte})
+                rawWriteBlk(i, ByteArray(blkSize) {fillByte})
             }
             return
         }
@@ -100,7 +104,7 @@ class StorageDeviceManager(val stk : ItemStack, n_uuid : String?, blockSize : In
             init()
         if (isReady()) {
             for (pairs in cache) {
-                writeBlk(pairs.key, pairs.value)
+                rawWriteBlk(pairs.key, pairs.value)
             }
             cache.clear()
             filehand.close()

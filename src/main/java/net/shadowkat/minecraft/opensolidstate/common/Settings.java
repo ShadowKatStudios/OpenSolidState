@@ -29,9 +29,9 @@ public class Settings {
         @Name("flash_sizes")
         public int[] flashSizes = {64, 128, 256};
 
-        @Comment("Flash sizes (in blocks)")
+        @Comment("Emulate a `drive` component.")
         @Name("flash_emulate_drive")
-        public boolean flashEmulateDrive = true;
+        public boolean flashEmulateDrive = false;
 
         @Comment({"Disc block size"})
         @Name("disc_block_size")

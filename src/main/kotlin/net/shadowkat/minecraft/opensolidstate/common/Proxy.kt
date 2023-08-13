@@ -17,8 +17,11 @@ import java.util.zip.ZipInputStream
 
 abstract class Proxy {
     fun preInit(e: FMLPreInitializationEvent) {
+        CreativeTab = CreativeTab()
         OssmEvents.init()
     }
+
+    lateinit var CreativeTab : CreativeTab
 
     /*val assemblerLoader = OSSMClassLoader<Any>(this::class,"net.shadowkat.minecraft.opensolidstate.common.assemblerTemplates", null) { cls, path ->
         println("Loading $path")

@@ -33,3 +33,5 @@ gui.ossm_itemprop_usage=Usage
 gui.ossm_too_many_embeded_devices=Too complex!
 gui.ossm_complexity=Complexity: %d/%d
 gui.ossm_maybe_add_items=Maybe you should add components.
+
+itemGroup.ossm=OpenSolidState

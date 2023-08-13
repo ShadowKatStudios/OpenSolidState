@@ -22,7 +22,7 @@ class OssmEeprom : OssmBaseItem {
 		this.outdated = true
 		this.tier = tier
 		this.card = card
-		creativeTab = CreativeTab.instance;
+		creativeTab = OpenSolidState.prox!!.CreativeTab
 		unlocalizedName = "ossm_prom_${tier}${cardText()}"
 		setRegistryName("ossm:prom_${tier}${cardText()}")
 	}

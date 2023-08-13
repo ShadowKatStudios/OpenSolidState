@@ -5,12 +5,14 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.entity.item.EntityItem
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
 import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
+import net.shadowkat.minecraft.opensolidstate.OpenSolidState
 import net.shadowkat.minecraft.opensolidstate.OssmEepromDriver
 import net.shadowkat.minecraft.opensolidstate.OssmEvents
 import net.shadowkat.minecraft.opensolidstate.common.Constants
@@ -18,6 +20,7 @@ import net.shadowkat.minecraft.opensolidstate.common.Items
 import net.shadowkat.minecraft.opensolidstate.common.Settings
 import net.shadowkat.minecraft.opensolidstate.common.utils.Utils
 import net.shadowkat.minecraft.opensolidstate.server.drivers.EepromDriver
+import net.shadowkat.minecraft.opensolidstate.server.utils.StorageDeviceManager
 
 class OssmNewEeprom() : OssmBaseItem() {
 
@@ -25,8 +28,10 @@ class OssmNewEeprom() : OssmBaseItem() {
         init {
         setHasSubtypes(true)
         setRegistryName("ossm:prom")
-        creativeTab = CreativeTab.instance
+        creativeTab = OpenSolidState.prox!!.CreativeTab
     }
+
+    var empty_blk = byteArrayOf()
 
     override fun getSubItems(tab: CreativeTabs, items: NonNullList<ItemStack>) {
         if (!this.isInCreativeTab(tab)) return;
@@ -93,4 +98,25 @@ class OssmNewEeprom() : OssmBaseItem() {
         return "item.ossm_prom_${i/3}${if (i%3 > 0) "_"+Constants.upgradeTypes[i%3] else ""}"
     }
 
+    override fun getEntityLifespan(itemStack: ItemStack, world: World): Int {
+        return Int.MAX_VALUE // if you have an entity on the ground for 20 months, you deserve it to despawn
+    }
+
+    override fun onEntityItemUpdate(entityItem: EntityItem): Boolean {
+        val itm = entityItem.item
+        if (entityItem.age > 100 && itm.metadata/3 == 0) {
+            val world = entityItem.world
+            if (world.isDaytime && !world.isRaining && !world.isThundering && world.canSeeSky(entityItem.position)) {
+                val ocd = itm.getSubCompound("oc:data")
+                if (ocd != null && ocd.hasKey("node") && ocd.getCompoundTag("node").hasKey("address")) {
+                    val sdm = StorageDeviceManager(itm, null, Settings.storage.eepromBlksize, Settings.storage.eepromSizes[0])
+                    if (sdm.blkSize > empty_blk.size)
+                        empty_blk = ByteArray(sdm.blkSize) {0xFF.toByte()}
+                    sdm.rawWriteBlk(world.rand.nextInt(sdm.blks), empty_blk)
+                    sdm.filehand.close()
+                }
+            }
+        }
+        return super.onEntityItemUpdate(entityItem)
+    }
 }

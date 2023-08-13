@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
+import net.shadowkat.minecraft.opensolidstate.OpenSolidState
 import net.shadowkat.minecraft.opensolidstate.OssmEvents
 import net.shadowkat.minecraft.opensolidstate.common.Constants
 import net.shadowkat.minecraft.opensolidstate.common.Items
@@ -22,7 +23,7 @@ class OssmFlash : OssmBaseItem() {
     init {
         setHasSubtypes(true)
         setRegistryName("ossm:flash")
-        creativeTab = CreativeTab.instance
+        creativeTab = OpenSolidState.prox!!.CreativeTab
     }
 
     override fun getData(stack: ItemStack): List<Pair<String, String>> {

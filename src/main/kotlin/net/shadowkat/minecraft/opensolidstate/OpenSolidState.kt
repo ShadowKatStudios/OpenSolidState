@@ -2,6 +2,7 @@ package net.shadowkat.minecraft.opensolidstate
 
 import li.cil.oc.api.IMC
 import net.minecraft.client.Minecraft
+import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation
@@ -14,6 +15,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.registry.GameRegistry
+import net.shadowkat.minecraft.opensolidstate.common.CreativeTab
 import net.shadowkat.minecraft.opensolidstate.common.Hooks
 import net.shadowkat.minecraft.opensolidstate.common.Proxy
 

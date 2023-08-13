@@ -18,7 +18,9 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.items.ItemStackHandler
 import net.shadowkat.minecraft.opensolidstate.common.Items
 import net.shadowkat.minecraft.opensolidstate.server.components.Soc
+import net.shadowkat.minecraft.opensolidstate.server.utils.InvEnvManager
 import kotlin.math.max
+import kotlin.math.min
 
 class SocDriver : DriverItem, MutableProcessor, CallBudget {
     init {
@@ -30,26 +32,29 @@ class SocDriver : DriverItem, MutableProcessor, CallBudget {
     }
 
     override fun createEnvironment(stk: ItemStack?, host: EnvironmentHost?): ManagedEnvironment {
-        val env =  Soc(stk!!.metadata, stk!!);
-        val inv = ItemStackHandler()
+        val ienv = InvEnvManager(stk!!, host)
+        val env =  Soc(stk!!.metadata, stk!!, ienv);
+        /*val inv = ItemStackHandler()
         inv.deserializeNBT(stk.getSubCompound("inventory"))
-        val envs : MutableList<Triple<ItemStack, ManagedEnvironment, DriverItem>> = mutableListOf()
+        val envs : MutableList<Triple<Pair<ItemStack, Int>, ManagedEnvironment, DriverItem>> = mutableListOf()
         for (slot in 0 until inv.slots) {
             val item = inv.getStackInSlot(slot)
             if (item.isEmpty) continue
             val drv = Driver.driverFor(item)
-            val env = drv.createEnvironment(item, host)
+            val cenv = drv.createEnvironment(item, host)
+            println(cenv)
             try {
-                (env.node() as Component).setVisibility(Visibility.Network)
+                (cenv.node() as Component).setVisibility(Visibility.Network)
 
             } catch (e : Exception) {
                 // lol
             }
-            envs.add(Triple(item, env, drv))
-        }
-        env.envs = envs
-        env.inv = inv
-        //env.save(dataTag(stk))
+            envs.add(Triple(item to slot, cenv, drv))
+        }*/
+
+        //env.envs = envs
+        //env.inv = inv
+        env.load(dataTag(stk))
         return env
     }
 
@@ -58,7 +63,7 @@ class SocDriver : DriverItem, MutableProcessor, CallBudget {
     }
 
     override fun tier(stk: ItemStack?): Int {
-        return max(stk?.metadata ?: 0, 2)
+        return min(stk?.metadata ?: 0, 2)
     }
 
     override fun dataTag(stk: ItemStack?): NBTTagCompound {
@@ -89,6 +94,6 @@ class SocDriver : DriverItem, MutableProcessor, CallBudget {
     }
 
     override fun getCallBudget(stk: ItemStack?): Double {
-        return Settings.get().callBudgets()[stk!!.metadata]
+        return Settings.get().callBudgets()[min(stk!!.metadata, 2)]
     }
 }

@@ -15,11 +15,11 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.items.ItemStackHandler
 import net.shadowkat.minecraft.opensolidstate.common.Constants
+import net.shadowkat.minecraft.opensolidstate.server.utils.InvEnvManager
 
-class Soc(val tier : Int, val stk : ItemStack) : AbstractManagedEnvironment(), DeviceInfo {
+class Soc(val tier : Int, val stk : ItemStack, val inv : InvEnvManager) : AbstractManagedEnvironment(), DeviceInfo {
 
-    lateinit var inv : ItemStackHandler
-    lateinit var envs : MutableList<Triple<ItemStack, ManagedEnvironment, li.cil.oc.api.driver.DriverItem>>
+    //lateinit var envs : MutableList<Triple<Pair<ItemStack, Int>, ManagedEnvironment, li.cil.oc.api.driver.DriverItem>>
 
     val devinfo : MutableMap<String, String> = mutableMapOf(
         DeviceAttribute.Class to DeviceInfo.DeviceClass.Processor,
@@ -41,23 +41,20 @@ class Soc(val tier : Int, val stk : ItemStack) : AbstractManagedEnvironment(), D
 
     override fun load(nbt: NBTTagCompound?) {
         super.load(nbt)
-        inv.deserializeNBT(stk.getSubCompound("inventory"))
-        for (p in envs) {
-            p.second.load(p.third.dataTag(p.first))
-        }
+        //inv.deserializeNBT(stk.getSubCompound("inventory"))
+        inv.load()
     }
 
     override fun save(nbt: NBTTagCompound?) {
         super.save(nbt)
-        for (p in envs) {
-            p.second.save(p.third.dataTag(p.first))
-        }
-        stk.tagCompound!!.setTag("inventory", inv.serializeNBT())
+        //val scp = stk.getSubCompound("inventory")!!
+        val scp = inv.save()
+        stk.tagCompound!!.setTag("inventory", scp)
     }
 
     override fun onConnect(node: Node?) {
         super.onConnect(node)
-        for (p in envs) {
+        /*for (p in envs) {
             /*println(node)
             println(node())
             println(p.second.node())
@@ -72,13 +69,22 @@ class Soc(val tier : Int, val stk : ItemStack) : AbstractManagedEnvironment(), D
                 println("==================")*/
             }
             //p.second.node().connect(node!!)
+        }*/
+        for ((itm, env, drv) in inv) {
+            if (env?.node() != null) {
+                if (node!! != env.node())
+                    node.network().connect(node, env.node())
+            }
         }
     }
 
     override fun onDisconnect(node: Node?) {
         super.onDisconnect(node)
-        for (p in envs) {
+        /*for (p in envs) {
             p.second.node().remove()
+        }*/
+        for ((itm, env, drv) in inv) {
+            env?.node()?.remove()
         }
     }
 }
